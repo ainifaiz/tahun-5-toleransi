@@ -3,38 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#7c6ee6">
-  <title>🔮 Ramalkan Akibatnya! | Pendidikan Moral Tahun 5</title>
+  <meta name="theme-color" content="#6f67d8">
+  <title>🎡 Roda Cabaran Toleransi | Pendidikan Moral Tahun 5</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <button id="homeBtn" class="icon-btn" aria-label="Kembali ke menu">🏠</button>
-    <div class="brand">🔮 <span>RAMALKAN AKIBATNYA!</span></div>
-    <div class="top-actions">
-      <button id="soundBtn" class="icon-btn" aria-label="Buka atau tutup bunyi">🔊</button>
-      <button id="teacherBtn" class="teacher-btn">⚙️ MOD GURU</button>
-    </div>
-  </header>
-  <main id="app" class="app"></main>
-  <div id="teacherModal" class="modal" aria-hidden="true">
-    <div class="modal-card">
-      <button id="closeTeacher" class="close-btn" aria-label="Tutup">✕</button>
-      <h2>⚙️ Mod Guru</h2>
-      <label>Pilih situasi
-        <select id="teacherSituation"></select>
-      </label>
-      <div class="teacher-grid">
-        <button id="jumpSituation">Pergi ke situasi</button>
-        <button id="repeatSituation">Ulang situasi</button>
-        <button id="showSuggestion">Tunjuk jawapan cadangan</button>
-        <button id="toggleHints">Bantuan: <span id="hintState">Aktif</span></button>
-        <button id="toggleSoundTeacher">Bunyi: <span id="soundState">Aktif</span></button>
-        <button id="resetGame" class="danger">Reset permainan</button>
-      </div>
-      <div id="teacherAnswer" class="teacher-answer"></div>
-    </div>
+<header class="topbar">
+  <button id="homeBtn" class="icon-btn" aria-label="Halaman utama">🏠</button>
+  <div class="brand">🎡 <span>RODA CABARAN TOLERANSI</span></div>
+  <div class="top-actions">
+    <button id="soundBtn" class="icon-btn" aria-label="Bunyi">🔊</button>
+    <button id="teacherBtn" class="teacher-btn">👩‍🏫 MOD GURU</button>
   </div>
-  <script src="script.js"></script>
+</header>
+
+<div id="statusBar" class="statusbar hidden">
+  <div>⭐ <b id="starCount">0</b> / <b id="starTarget">10</b></div>
+  <div>🎡 Pusingan: <b id="roundCount">0</b></div>
+  <div>🏆 Sasaran: Pasukan Harmoni</div>
+</div>
+
+<main id="app" class="app"></main>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<div id="teacherModal" class="modal" aria-hidden="true">
+  <div class="modal-card">
+    <button id="closeTeacher" class="close-btn" aria-label="Tutup">✕</button>
+    <h2>👩‍🏫 Mod Guru</h2>
+    <label>Kategori
+      <select id="teacherCategory"></select>
+    </label>
+    <label>Situasi
+      <select id="teacherSituation"></select>
+    </label>
+    <div class="teacher-grid">
+      <button id="teacherOpen">Buka situasi</button>
+      <button id="teacherSpin">🎡 Putar rawak</button>
+      <button id="teacherAddStar">➕ Tambah bintang</button>
+      <button id="teacherMinusStar">➖ Tolak bintang</button>
+      <button id="teacherAnswerToggle">👁️ Tunjuk / sembunyi jawapan</button>
+      <button id="teacherEasy">🌱 Mod Mudah</button>
+      <button id="teacherKbat">🔥 Mod KBAT</button>
+      <button id="teacherSound">🔊 Bunyi</button>
+      <button id="teacherReset" class="danger">🔄 Reset permainan</button>
+    </div>
+    <div id="teacherAnswer" class="teacher-answer hidden"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
