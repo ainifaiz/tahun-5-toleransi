@@ -1,58 +1,298 @@
-'use strict';
-// Setiap kes menyatakan tindakan yang dinilai, bukan masalah sahaja.
-const cases = [
-{title:'Gelanggang dan Program Masyarakat',icon:'🏸',scene:'court',text:'Gelanggang yang ditempah untuk latihan sepak takraw diperlukan bagi program kesihatan masyarakat. Setelah berbincang, murid bersetuju menunda latihan dan memberikan laluan.',answer:true,good:'bertolak ansur dengan menunda latihan dan memberikan laluan kepada program masyarakat.',bad:['memarahi petugas program kesihatan.','enggan berbincang tentang penggunaan gelanggang.'],hint:'Perhatikan persetujuan murid selepas berbincang.'},
-{title:'Tempat Duduk di LRT',icon:'🚆',scene:'lrt',text:'Seorang warga emas berdiri di dalam LRT yang penuh. Seorang murid bangun dan menawarkan tempat duduknya kepada warga emas itu.',answer:true,good:'memberikan tempat duduk kepada warga emas.',bad:['berpura-pura tidur supaya tidak perlu membantu.','meletakkan beg di tempat duduk kosong.'],hint:'Siapakah yang lebih memerlukan tempat duduk?'},
-{title:'Beg di Kerusi Bas',icon:'🚌',scene:'bus',text:'Seorang penumpang bas meletakkan beg di kerusi sebelahnya dan enggan mengalihkannya walaupun penumpang lain memerlukan tempat duduk.',answer:false,good:'mengalihkan beg supaya orang lain boleh duduk.',bad:['membiarkan beg memenuhi tempat duduk.','menyuruh penumpang lain terus berdiri.'],hint:'Kerusi disediakan untuk penumpang. Adakah tindakan ini menghormati keperluan orang lain?'},
-{title:'Berkongsi Komputer',icon:'💻',scene:'computer',text:'Semua komputer sedang digunakan. Seorang murid perlu menyiapkan tugasan. Rakan yang sudah selesai memberikan gilirannya kepada murid tersebut.',answer:true,good:'bergilir dan memberikan peluang menggunakan komputer.',bad:['terus bermain walaupun tugasan sudah selesai.','melarang orang lain menggunakan komputer.'],hint:'Fikirkan cara memberikan peluang kepada rakan.'},
-{title:'Kereta Menghalang Laluan',icon:'🚗',scene:'car',text:'Sebuah kereta menghalang laluan ke kedai jahit. Apabila pelanggan yang membawa pakaian meminta laluan, pemilik kereta bersetuju mengalihkan kenderaannya.',answer:true,good:'bertolak ansur dengan mengalihkan kenderaan atau memberikan laluan.',bad:['membiarkan kereta menghalang pintu kedai.','memarahi pelanggan yang meminta laluan.'],hint:'Apakah tindakan pemilik kereta selepas diminta memberikan laluan?'},
-{title:'Raket Tercalar',icon:'🏸',scene:'racket',text:'Raket badminton baharu tercalar tanpa sengaja selepas digunakan bersama. Pemiliknya bersabar dan berbincang dengan rakan tentang cara menjaga raket.',answer:true,good:'bersabar dan tidak menyalahkan rakan secara melulu.',bad:['menjerit dan terus menyalahkan rakan.','merosakkan raket rakan sebagai balasan.'],hint:'Perhatikan cara pemilik raket mengawal perasaannya.'},
-{title:'Nenek dalam Barisan',icon:'🍜',scene:'food',text:'Seorang nenek yang sangat lapar dan lemah masuk ke hadapan barisan. Setelah mengetahui keadaannya, orang yang beratur bersetuju memberikan keutamaan kepadanya.',answer:true,good:'bersabar dan memberikan peluang kepada orang yang memerlukan.',bad:['mengejek nenek yang kelihatan lemah.','memotong barisan sesuka hati pada setiap masa.'],hint:'Nilai tindakan orang yang memberikan keutamaan dengan persetujuan bersama.',note:'Kita tetap beratur dan meminta izin. Kes ini menilai sikap orang yang memberikan keutamaan kepada nenek yang memerlukan bantuan.'},
-{title:'Buku Ensiklopedia',icon:'📚',scene:'book',text:'Dua orang murid memerlukan ensiklopedia yang sama di perpustakaan. Mereka berbincang dan bersetuju membaca serta menggunakan buku itu bersama-sama.',answer:true,good:'berkongsi atau bergilir menggunakan buku.',bad:['menyorokkan buku supaya rakan tidak dapat membacanya.','berebut dan menarik buku itu.'],hint:'Bagaimanakah kedua-dua murid mendapat manfaat daripada buku yang sama?'},
-{title:'Teksi untuk Wanita Sakit',icon:'🚕',scene:'taxi',text:'Seorang wanita sakit memerlukan teksi. Orang yang sudah menunggu bersetuju memberikan giliran kepadanya supaya dia dapat mendapatkan rawatan segera.',answer:true,good:'memberikan keutamaan kepada orang yang lebih memerlukan.',bad:['berebut teksi tanpa mempedulikan wanita itu.','mengejek wanita yang sedang sakit.'],hint:'Fikirkan keperluan orang yang sedang sakit.'},
-{title:'Tempat Letak Basikal',icon:'🚲',scene:'bike',text:'Tempat letak basikal yang ingin digunakan seorang murid telah digunakan oleh orang lain. Murid itu berbincang dengan baik dan memilih ruang kosong lain tanpa bergaduh.',answer:true,good:'berbincang dengan baik dan mencari ruang lain tanpa bergaduh.',bad:['menolak basikal orang lain sehingga jatuh.','bergaduh kerana mahukan tempat yang sama.'],hint:'Adakah murid mencari penyelesaian secara tenang?'}
+"use strict";
+
+const situations = [
+  {
+    title:"Dewan Komuniti", icon:"🏛️",
+    situation:"Dua kumpulan penduduk mahu menggunakan dewan pada masa yang sama. Kedua-duanya tidak mahu berbincang atau bertolak ansur.",
+    prediction:[
+      {emoji:"😡",label:"Bergaduh",type:"effect",feedback:"Apabila penduduk tidak mahu bertolak ansur, pertelingkahan boleh berlaku."},
+      {emoji:"😢",label:"Hubungan menjadi renggang",type:"effect",feedback:"Sikap tidak bertoleransi boleh menyebabkan jiran menjauhkan diri antara satu sama lain."},
+      {emoji:"🏘️",label:"Masyarakat tidak aman",type:"effect",feedback:"Konflik yang berterusan boleh menjejaskan keamanan masyarakat."},
+      {emoji:"🤝",label:"Berbincang dan mencari penyelesaian",type:"solution",feedback:"Ini tindakan yang baik untuk mengelakkan konflik, bukan kesan pengabaian toleransi."}
+    ],
+    helpers:["mereka tidak mahu berbincang","mereka tidak bertolak ansur","masing-masing mahu menang","mereka tidak menghormati orang lain"],
+    feelings:["Risau","Sedih","Marah"],
+    solutions:["Terus bergaduh","Tidak bercakap antara satu sama lain","Berbincang dan bertolak ansur","Menjerit supaya orang lain mengalah"],
+    correctSolution:2,
+    suggested:"Berbincang, berkongsi masa penggunaan dewan dan bertolak ansur."
+  },
+  {
+    title:"Bunyi Bising", icon:"🔊",
+    situation:"Seorang jiran memainkan muzik dengan kuat ketika jirannya sedang berehat. Mereka enggan berbincang tentang masalah itu.",
+    prediction:[
+      {emoji:"😠",label:"Jiran saling marah",type:"effect",feedback:"Tanpa perbincangan, rasa marah boleh menjadi semakin kuat."},
+      {emoji:"💔",label:"Hubungan jiran rosak",type:"effect",feedback:"Sikap tidak menghormati keperluan jiran boleh merosakkan hubungan."},
+      {emoji:"📢",label:"Bunyi menjadi lebih kuat",type:"effect",feedback:"Jika tiada tolak ansur, masalah mungkin berterusan atau menjadi lebih buruk."},
+      {emoji:"🤝",label:"Tetapkan masa muzik bersama",type:"solution",feedback:"Ini penyelesaian toleransi yang sesuai untuk mengelakkan konflik."}
+    ],
+    helpers:["mereka tidak menghormati masa rehat","mereka enggan berbincang","mereka hanya fikir kehendak sendiri","bunyi kuat mengganggu orang lain"],
+    feelings:["Risau","Sedih","Marah"],
+    solutions:["Naikkan muzik lebih kuat","Berbincang tentang masa yang sesuai","Saling membalas dengan bunyi bising","Tidak tegur langsung"],
+    correctSolution:1,
+    suggested:"Berbincang dan menetapkan masa muzik yang sesuai."
+  },
+  {
+    title:"Tempat Letak Kereta", icon:"🚗",
+    situation:"Dua jiran berebut satu tempat letak kereta dan masing-masing tidak mahu mengalah.",
+    prediction:[
+      {emoji:"😡",label:"Pertengkaran berlaku",type:"effect",feedback:"Berebut tanpa tolak ansur boleh menyebabkan pertengkaran."},
+      {emoji:"🚫",label:"Saling menghalang kereta",type:"effect",feedback:"Konflik boleh menjadi lebih serius apabila masing-masing mahu menang."},
+      {emoji:"😢",label:"Hubungan menjadi renggang",type:"effect",feedback:"Sikap tidak bertoleransi boleh menyebabkan jiran tidak lagi mesra."},
+      {emoji:"🅿️",label:"Cari tempat lain bersama",type:"solution",feedback:"Ini tindakan toleransi yang boleh membantu menyelesaikan masalah."}
+    ],
+    helpers:["masing-masing mahu menang","mereka tidak mahu mengalah","mereka tidak berbincang dengan baik","mereka tidak menghormati giliran"],
+    feelings:["Risau","Sedih","Marah"],
+    solutions:["Letak kereta melintang","Berbincang dan bergilir","Menyembunyikan kon jiran","Menjerit dari rumah"],
+    correctSolution:1,
+    suggested:"Berbincang, bergilir atau mencari ruang lain dengan baik."
+  },
+  {
+    title:"Perayaan Jiran", icon:"🎉",
+    situation:"Seorang penduduk tidak menghormati sambutan perayaan jirannya dan mengejek amalan mereka.",
+    prediction:[
+      {emoji:"😢",label:"Jiran berasa tersinggung",type:"effect",feedback:"Ejekan boleh menyakiti perasaan orang lain."},
+      {emoji:"💔",label:"Hubungan antara jiran renggang",type:"effect",feedback:"Kurang hormat boleh menjejaskan hubungan dalam masyarakat."},
+      {emoji:"⚡",label:"Konflik berlaku",type:"effect",feedback:"Sikap tidak toleran boleh mencetuskan pertelingkahan."},
+      {emoji:"🙏",label:"Hormati sambutan jiran",type:"solution",feedback:"Menghormati amalan orang lain ialah tindakan toleransi."}
+    ],
+    helpers:["dia mengejek orang lain","dia tidak menghormati perbezaan","perasaan jiran boleh terluka","setiap orang perlu dihormati"],
+    feelings:["Risau","Sedih","Marah"],
+    solutions:["Terus mengejek","Menghormati sambutan jiran","Menghalang sambutan","Menyebarkan ejekan"],
+    correctSolution:1,
+    suggested:"Menghormati sambutan dan perbezaan amalan jiran."
+  },
+  {
+    title:"Kemudahan Taman", icon:"🏸",
+    situation:"Kanak-kanak berebut menggunakan gelanggang permainan dan tidak mahu menunggu giliran.",
+    prediction:[
+      {emoji:"😡",label:"Bergaduh",type:"effect",feedback:"Berebut tanpa bertolak ansur boleh menyebabkan pergaduhan."},
+      {emoji:"😭",label:"Ada yang kecewa",type:"effect",feedback:"Apabila giliran tidak dihormati, orang lain boleh berasa kecewa."},
+      {emoji:"🚷",label:"Permainan terganggu",type:"effect",feedback:"Konflik boleh menyebabkan semua orang tidak dapat bermain dengan baik."},
+      {emoji:"⏰",label:"Buat jadual giliran",type:"solution",feedback:"Bergilir ialah cara bertoleransi dan adil."}
+    ],
+    helpers:["mereka tidak mahu menunggu giliran","mereka berebut","mereka tidak berkongsi kemudahan","mereka tidak menghormati hak orang lain"],
+    feelings:["Risau","Sedih","Marah"],
+    solutions:["Berebut lebih kuat","Buat giliran penggunaan","Sorok peralatan","Halau kumpulan lain"],
+    correctSolution:1,
+    suggested:"Buat giliran dan berkongsi kemudahan taman."
+  },
+  {
+    title:"Gotong-royong", icon:"🧹",
+    situation:"Penduduk sedang merancang gotong-royong tetapi ada yang tidak mahu menerima pendapat orang lain.",
+    prediction:[
+      {emoji:"🗯️",label:"Mesyuarat menjadi tegang",type:"effect",feedback:"Tidak mahu mendengar pendapat boleh menyebabkan suasana tegang."},
+      {emoji:"🙅",label:"Penduduk enggan bekerjasama",type:"effect",feedback:"Orang mungkin hilang semangat untuk membantu jika pendapat mereka tidak dihormati."},
+      {emoji:"🧹",label:"Aktiviti tidak berjalan lancar",type:"effect",feedback:"Kurang toleransi boleh menjejaskan kerjasama dan perancangan."},
+      {emoji:"👂",label:"Dengar dan bincang pendapat",type:"solution",feedback:"Mendengar pandangan orang lain ialah amalan toleransi."}
+    ],
+    helpers:["pendapat orang lain tidak dihormati","mereka tidak mahu mendengar","mereka sukar bekerjasama","semua orang mahu cadangan sendiri diterima"],
+    feelings:["Risau","Sedih","Marah"],
+    solutions:["Paksa semua ikut satu pendapat","Dengar dan bincang semua cadangan","Batalkan gotong-royong","Marah orang yang tidak setuju"],
+    correctSolution:1,
+    suggested:"Mendengar semua pendapat dan mencari persetujuan bersama."
+  }
 ];
-const $=s=>document.querySelector(s), app=$('#app');
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-let group=1, state=null, category=null, sound=true, reviewFrom='groups';
-let records={};try{records=JSON.parse(localStorage.getItem('detektif-v1'))||{}}catch(e){}
-function persist(){try{localStorage.setItem('detektif-v1',JSON.stringify(records))}catch(e){}}
-function stopVoice(){if('speechSynthesis' in window)speechSynthesis.cancel()}
-function screen(html){stopVoice();app.innerHTML=html;window.scrollTo(0,0)}
-function person(x,y,color='#478eb0',skin='#bd8159',pose='normal',elder=false){return `<g transform="translate(${x} ${y})"><path d="M-15 65l-5 43m35-43 5 43" stroke="#29434d" stroke-width="12" stroke-linecap="round"/><path d="M-27 30Q0 16 27 30L23 71H-23Z" fill="${color}"/><path d="M-22 35l-18 30m63-30 ${pose==='offer'?'l38 -16':'l18 30'}" stroke="${skin}" stroke-width="10" stroke-linecap="round"/><circle cy="0" r="25" fill="${skin}"/><path d="M-25 -4Q-28 -35 2 -29Q30 -30 25 -2L17 -16Q-8 -8 -20 -16Z" fill="${elder?'#d8dadd':'#293942'}"/><circle cx="-8" cy="0" r="2.5"/><circle cx="8" cy="0" r="2.5"/><path d="M-7 11q7 7 14 0" fill="none" stroke="#693c32" stroke-width="2.5"/>${elder?'<path d="M37 63q10-15 13 0v52" fill="none" stroke="#7b6046" stroke-width="5"/>':''}</g>`}
-function label(x,y,t,w=180){return `<rect x="${x}" y="${y}" width="${w}" height="35" rx="10" fill="#fffdf6"/><text x="${x+w/2}" y="${y+23}" text-anchor="middle" font-size="15" font-weight="bold" fill="#173e49">${t}</text>`}
-function vehicle(color,text){return `<path d="M85 190l30-60h130l53 60h52v66H62v-52Z" fill="${color}" stroke="#173e49" stroke-width="4"/><path d="M128 142h53v45H106Zm67 0h42l41 45h-83Z" fill="#e2f2ef"/><circle cx="120" cy="259" r="24" fill="#29434d"/><circle cx="289" cy="259" r="24" fill="#29434d"/>${label(132,196,text,147)}`}
-function illustration(type,title='Ilustrasi situasi'){
-let s='';const base='<rect width="520" height="350" rx="24" fill="#deeee5"/><circle cx="455" cy="55" r="29" fill="#ffdc76"/><path d="M0 278Q190 239 520 282V350H0Z" fill="#b9d7c8"/>';
-if(type==='hero')s=`<circle cx="270" cy="174" r="134" fill="#ffdf80"/>${person(245,151,'#d9a658','#bb8058','offer')}<path d="M209 128l10-41h60l12 41Z" fill="#173e49"/><path d="M195 128h110" stroke="#173e49" stroke-width="13" stroke-linecap="round"/><circle cx="348" cy="172" r="35" fill="#b4e1df" fill-opacity=".65" stroke="#173e49" stroke-width="9"/><path d="M370 199l36 42" stroke="#173e49" stroke-width="14" stroke-linecap="round"/>${label(26,34,'FAIL MISI • 10 KES',195)}${label(34,273,'SABAR',100)}${label(358,65,'HORMAT',120)}`;
-if(type==='court'||type==='racket')s=`<path d="M24 280L98 165H433l64 115Z" fill="#8fc4b0" stroke="white" stroke-width="3"/><path d="M260 140v158m-160-90h320" stroke="white" stroke-width="3"/>${label(125,25,type==='court'?'PROGRAM KESIHATAN':'BERBINCANG DENGAN TENANG',275)}${person(130,164,'#4b97c2','#bf8159','offer')}${person(354,159,'#df9c62','#e4ae85','offer')}${type==='court'?'<circle cx="83" cy="244" r="18" fill="#dfb958" stroke="#826333" stroke-width="3"/><path d="M67 244h32m-18-18v36m-12-30 25 25" stroke="#826333" fill="none"/><rect x="212" y="110" width="73" height="58" rx="8" fill="white"/><path d="M248 118v40m-20-20h40" stroke="#cf6561" stroke-width="10"/>':'<ellipse cx="239" cy="205" rx="23" ry="31" fill="#e4f1f0" stroke="#365867" stroke-width="5"/><path d="M239 236v36m-14-76 29 21m-25-31 23 26" stroke="#365867" stroke-width="3"/><path d="M256 220l10 3" stroke="#d55548" stroke-width="5"/>'}`;
-if(type==='lrt'||type==='bus')s=`<rect x="23" y="29" width="474" height="268" rx="25" fill="#eaf3ef" stroke="#7da3a6" stroke-width="5"/><path d="M55 72h410M309 72v202" stroke="#93b3b1" stroke-width="6"/><rect x="50" y="86" width="126" height="70" rx="10" fill="#acd3df"/><rect x="338" y="87" width="130" height="66" rx="10" fill="#acd3df"/><path d="M72 183h162v67H72Z" fill="#669cba"/><path d="M72 251v28m160-28v28" stroke="#315967" stroke-width="7"/>${person(110,145,'#e3a058','#ca8a61',type==='lrt'?'offer':'normal')}${person(378,158,'#a081ad','#d7a27c','normal',type==='lrt')}${label(184,38,type==='lrt'?'LRT':'BAS',99)}${type==='bus'?'<rect x="172" y="180" width="53" height="63" rx="10" fill="#df7961"/><path d="M186 180v-10q13-15 25 0v10" stroke="#743e39" stroke-width="6" fill="none"/>':label(190,105,'Silakan!',110)}`;
-if(type==='computer')s=`${label(145,22,'PUSAT KOMPUTER',225)}<path d="M38 217h444v18H38Z" fill="#b18b64"/><path d="M65 235v75m385-75v75" stroke="#846440" stroke-width="9"/><rect x="62" y="110" width="117" height="83" rx="9" fill="#3b606b"/><rect x="71" y="119" width="99" height="62" fill="#a8d6df"/><path d="M120 191v25" stroke="#3b606b" stroke-width="12"/>${person(256,145,'#ba91c0','#d69b70','offer')}${person(411,157,'#4d9f91','#9d6548')}<rect x="376" y="198" width="45" height="53" rx="3" fill="#ffe09a"/>${label(218,64,'Giliran kamu.',160)}`;
-if(type==='car'||type==='taxi')s=`${label(32,20,type==='car'?'KEDAI JAHIT':'PERHENTIAN TEKSI',220)}<rect x="30" y="65" width="160" height="87" rx="5" fill="#f6e1ba"/><path d="M30 65h160" stroke="#dc927a" stroke-width="17"/>${vehicle(type==='car'?'#6baab9':'#f6c94f',type==='car'?'Beri laluan →':'TEKSI')}${person(419,161,'#ae8db4','#c28d66','offer')}${type==='car'?'<path d="M398 215l14-15h24l18 15-12 15-8-8v40h-29v-40l-6 8Z" fill="#fff9e8"/>':label(291,56,'Silakan dahulu.',194)}`;
-if(type==='food')s=`<rect x="37" y="80" width="179" height="194" fill="#f5d695"/><path d="M22 88l25-51h166l23 51Z" fill="#d98469"/>${label(57,105,'GERAI MAKAN',140)}<path d="M45 221h174" stroke="#88664a" stroke-width="14"/><path d="M88 179h63q-4 29-32 29t-31-29" fill="#78b7c2"/>${person(283,164,'#a58dba','#dca980','normal',true)}${person(400,158,'#6aa39b','#b57850','offer')}${label(260,61,'Kami beri laluan.',218)}`;
-if(type==='book')s=`<rect x="25" y="29" width="470" height="112" rx="8" fill="#b79a70"/>${[45,85,125,170,220,264,311,355,407,452].map((x,i)=>`<rect x="${x}" y="48" width="25" height="73" rx="3" fill="${['#73aebd','#e5bf67','#cb8a79'][i%3]}"/>`).join('')}${person(148,182,'#658cb8','#a66c4d','offer')}${person(364,182,'#ba8dae','#e0a978','offer')}<path d="M195 233q40-19 65 0q26-19 65 0v63q-39-19-65 0q-25-19-65 0Z" fill="#fff8df" stroke="#427481" stroke-width="4"/><path d="M260 233v63" stroke="#427481" stroke-width="3"/>${label(160,147,'Baca bersama.',190)}`;
-if(type==='bike')s=`${label(114,20,'TEMPAT LETAK BASIKAL',289)}<path d="M35 265h444M64 265v-80h73v80m59 0v-80h73v80m58 0v-80h73v80" fill="none" stroke="#8ea9a3" stroke-width="7"/><g fill="none" stroke="#315763" stroke-width="5"><circle cx="118" cy="261" r="34"/><circle cx="229" cy="261" r="34"/><path d="M118 261l38-62 31 62H118l71-46 40 46-17-81h-18m-51 19h29"/></g>${person(332,145,'#d89b5f','#cc9067','offer')}${person(432,146,'#638fbb','#a77153')}${label(35,79,'Ada ruang lain.',194)}`;
-return `<svg viewBox="0 0 520 350" role="img" aria-label="${esc(title)}" xmlns="http://www.w3.org/2000/svg">${base}${s}</svg>`}
-function badge(n){return n===100?'🏆 Juara Toleransi':n>=80?'🌟 Detektif Hebat':n>=60?'🔎 Penyiasat Harmoni':n>=30?'⭐ Toleransi Muda':'🔍 Detektif Baharu'}
-function welcome(){screen(`<section class="hero"><div><span class="eyebrow">FAIL MISI / NILAI TOLERANSI</span><h1>Detektif kecil.<br>Harmoni besar.</h1><p>Selamat datang ke <b>Misi Detektif Toleransi</b>! Cari amalan toleransi dalam hidup bermasyarakat.</p><div class="actions"><button class="primary" onclick="groups()">MULA MISI →</button><button onclick="instructions()">CARA BERMAIN</button></div><div class="stats"><span class="chip">10 kad kes</span><span class="chip">3 kumpulan</span><span class="chip">2 mod</span></div></div><div class="art">${illustration('hero','Maskot detektif kanak-kanak dengan kanta pembesar')}</div></section><div class="actions"><button onclick="groups()">PILIH KUMPULAN</button></div>`)}
-function instructions(){screen(`<section class="panel"><span class="eyebrow">BUKU PANDUAN DETEKTIF</span><h2>Cari tindakan yang membawa harmoni.</h2><ol><li>Pilih kumpulan dan mod permainan.</li><li>Baca atau dengar situasi, kemudian lihat ilustrasi.</li><li>Nilai <b>tindakan watak</b>: toleransi atau tidak bertoleransi?</li><li>Lengkapkan ayat dengan tindakan toleransi yang sesuai.</li><li>Semak jawapan, bincang penjelasan dan teruskan misi.</li></ol><p><b>Markah:</b> kategori betul = 5; pelengkap betul = 5. Markah percubaan pertama sahaja dikira (maksimum 100). Cuba lagi untuk belajar tanpa menambah markah.</p><p><b>Mod cabaran:</b> guru menyemak ayat bebas berdasarkan contoh dan memberikan 2 mata bonus berasingan bagi setiap pelengkap betul pada percubaan pertama (maksimum 20).</p><p>Audio menggunakan suara peranti; ketersediaan suara Bahasa Melayu bergantung pada peranti.</p><button class="primary" onclick="groups()">PILIH KUMPULAN →</button></section>`)}
-function groups(){screen(`<span class="eyebrow">PASUKAN PENYIASAT</span><h2>Siapa bersedia untuk misi?</h2><div class="groups">${[1,2,3].map(n=>`<button class="group" onclick="setup(${n})"><span>${['🧭','🔎','🗝️'][n-1]}</span><strong>KUMPULAN ${n}</strong><span class="muted">${records[n]?`${records[n].results.length}/10 kes · ${records[n].score}/100 markah`:'Misi belum bermula'}</span></button>`).join('')}</div><div class="actions"><button onclick="welcome()">← LAMAN UTAMA</button></div>`)}
-function setup(n){group=n;let old=records[n];screen(`<section class="panel"><span class="eyebrow">KUMPULAN ${n}</span><h2>Sediakan fail misi kamu.</h2>${old?`<p>Rekod: ${old.score}/100 markah · ${old.results.length}/10 kad.</p><button class="primary" onclick="resume()">${old.results.length===10?'LIHAT KEPUTUSAN':'SAMBUNG MISI'}</button>`:''}<label for="mode">Mod pembelajaran</label><select id="mode"><option value="easy">MOD MUDAH — pilih pelengkap ayat</option><option value="challenge">MOD CABARAN — tulis dan semak bersama guru</option></select><label><input id="random" type="checkbox" checked> Rawakkan susunan kad</label><p class="muted">${old?'Misi baharu menggantikan rekod kumpulan ini selepas pengesahan.':'Kemajuan disimpan pada pelayar ini jika storan tersedia.'}</p><div class="actions"><button class="gold" onclick="start()">MULA MISI BAHARU →</button><button onclick="groups()">KEMBALI</button></div></section>`)}
-function start(){if(records[group]&&!confirm('Mulakan semula dan gantikan rekod kumpulan ini?'))return;state={mode:$('#mode').value,order:$('#random').checked?shuffle(cases.map((_,i)=>i)):cases.map((_,i)=>i),results:[],score:0,bonus:0,pending:null};records[group]=state;persist();game()}
-function resume(){state=records[group];state.results.length===10?finish():game()}
-function current(){return cases[state.order[state.results.length]]}
-function pick(v){category=v;document.querySelectorAll('[data-category]').forEach(b=>{const yes=b.dataset.category===String(v);b.classList.toggle('selected',yes);b.setAttribute('aria-pressed',String(yes))})}
-function game(){category=null;const c=current(),i=state.results.length;const options=shuffle([c.good,...c.bad]);screen(`<div class="toolbar"><div><span class="eyebrow">KUMPULAN ${group} · ${state.mode==='easy'?'MOD MUDAH':'MOD CABARAN'}</span><br><span class="score">${state.score}<small> / 100</small></span> <span class="chip">${badge(state.score)}</span>${state.mode==='challenge'?` <span class="chip">Bonus ${state.bonus}/20</span>`:''}</div><button onclick="groups()">TUKAR KUMPULAN</button></div><div class="progress" role="progressbar" aria-label="Kemajuan kad" aria-valuenow="${i}" aria-valuemin="0" aria-valuemax="10"><span style="width:${i*10}%"></span></div><section class="game"><div><div class="art">${illustration(c.scene,c.title)}</div><div class="actions"><button onclick="readCase()">🔊 BACA / ULANG AUDIO</button>${state.mode==='easy'?'<button onclick="hint()">💡 PETUNJUK</button>':''}</div><div id="hint" aria-live="polite"></div></div><div class="panel"><span class="case-label">FAIL ${String(state.order[i]+1).padStart(2,'0')} · KAD ${i+1} / 10</span><h2>${c.title}</h2><p class="situation">${c.text}</p><b>Adakah tindakan ini menunjukkan toleransi?</b><div class="choices"><button data-category="true" aria-pressed="false" onclick="pick(true)">✅ TOLERANSI</button><button data-category="false" aria-pressed="false" onclick="pick(false)">❌ TIDAK BERTOLERANSI</button></div><label for="completion">Amalan toleransi dalam situasi ini ialah…</label>${state.mode==='easy'?`<select id="completion"><option value="">Pilih pelengkap ayat</option>${options.map(o=>`<option value="${esc(o)}">${o}</option>`).join('')}</select>`:'<textarea id="completion" maxlength="500" placeholder="Tulis tindakan toleransi yang sesuai…"></textarea>'}<div id="feedback" class="feedback" role="status"></div><div class="actions"><button id="check" class="primary" onclick="check()">SEMAK JAWAPAN</button><button id="next" class="gold" hidden onclick="next()">${i===9?'LIHAT KEPUTUSAN':'SETERUSNYA →'}</button></div></div></section>`);if(state.pending?.evaluated){showOutcome()}else if(state.pending){category=state.pending.category;pick(category);$('#completion').value=state.pending.text;teacherPanel()}}
-function hint(){$('#hint').innerHTML=`<p class="hint">💡 ${current().hint}</p>`}
-function readCase(){if(!('speechSynthesis' in window)){$('#hint').innerHTML='<p class="hint">Audio tidak disokong oleh pelayar ini. Guru boleh membacakan situasi.</p>';return}stopVoice();const u=new SpeechSynthesisUtterance(current().text);u.lang='ms-MY';u.rate=.85;const voice=speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith('ms'));if(voice)u.voice=voice;speechSynthesis.speak(u)}
-function beep(ok=true){if(!sound)return;try{const A=window.AudioContext||window.webkitAudioContext;const a=new A(),o=a.createOscillator(),g=a.createGain();o.connect(g);g.connect(a.destination);o.frequency.value=ok?660:240;g.gain.value=.06;o.start();g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.22);o.stop(a.currentTime+.23);o.onended=()=>a.close()}catch(e){}}
-function check(){let text=$('#completion').value.trim();if(category===null||!text){$('#feedback').className='feedback error';$('#feedback').textContent='Pilih kategori dan lengkapkan ayat dahulu.';return}if(state.mode==='challenge'){if(!state.pending){state.pending={category,text,evaluated:false};persist()}teacherPanel()}else evaluate(text===current().good,category,text)}
-function teacherPanel(){const c=current();$('#check').hidden=true;document.querySelectorAll('[data-category],#completion').forEach(e=>e.disabled=true);$('#feedback').className='feedback';$('#feedback').innerHTML=`<b>Semakan bersama guru</b><p>Jawapan kumpulan: “${esc(state.pending.text)}”</p><p>Contoh: ${c.good}</p><p>Terima ayat lain yang membawa maksud sama dan menerangkan tindakan yang sesuai. Guru menentukan ketepatan pelengkap.</p><button onclick="evaluate(true,state.pending.category,state.pending.text)">GURU: AYAT BETUL</button> <button onclick="evaluate(false,state.pending.category,state.pending.text)">GURU: PERLU BIMBINGAN</button>`}
-function evaluate(sentence,cat,text){if(state.pending?.evaluated)return;const categoryCorrect=cat===current().answer;state.pending={evaluated:true,category:cat,text,categoryCorrect,sentenceCorrect:sentence,points:(categoryCorrect?5:0)+(sentence?5:0),bonus:state.mode==='challenge'&&sentence?2:0};persist();showOutcome();beep(categoryCorrect&&sentence)}
-function showOutcome(){const p=state.pending,c=current();pick(p.category);$('#completion').value=p.text;document.querySelectorAll('[data-category],#completion').forEach(e=>e.disabled=true);$('#check').hidden=true;$('#next').hidden=false;$('#feedback').className='feedback '+(p.points===10?'celebrate':'error');$('#feedback').innerHTML=`<b>${p.points===10?'Bagus! Kamu berjaya mengenal pasti amalan toleransi.':'Cuba fikir semula. Toleransi ialah sikap bertolak ansur, sabar dan menghormati orang lain.'}</b><p>Kategori: ${p.categoryCorrect?'betul (+5)':'perlu diperbaiki (+0)'} · Ayat: ${p.sentenceCorrect?'betul (+5)':'perlu diperbaiki (+0)'}</p><p><b>${c.answer?'✅ TOLERANSI':'❌ TIDAK BERTOLERANSI'}</b><br>Amalan toleransi dalam situasi ini ialah ${c.good}</p>${c.note?`<p>${c.note}</p>`:''}<small>Percubaan pertama: ${p.points}/10${p.bonus?' · bonus +2':''}. Markah dimasukkan apabila meneruskan kad.</small>${p.points<10?'<div class="actions"><button onclick="retry()">CUBA LAGI (LATIHAN)</button></div>':''}`}
-function retry(){document.querySelectorAll('[data-category],#completion').forEach(e=>e.disabled=false);$('#feedback').textContent='Latihan semula: pilih jawapan yang sesuai. Markah percubaan pertama dikekalkan.';$('#check').hidden=false;$('#check').onclick=()=>{const correct=category===current().answer;const text=$('#completion').value.trim();$('#feedback').textContent=state.mode==='easy'?(correct&&text===current().good?'Betul! Kamu sudah memahami kes ini.':'Belum tepat. Fikirkan tindakan yang menghormati keperluan orang lain.'):(correct?'Kategori betul. Bincangkan ayat baharu dengan guru: '+current().good:'Cuba semak kategori semula.');};}
-function next(){if(!state.pending?.evaluated)return;const p=state.pending;state.results.push({...p,id:state.order[state.results.length]});state.score+=p.points;state.bonus+=p.bonus;state.pending=null;persist();state.results.length===10?finish():game()}
-function finish(){beep();screen(`<section class="panel center"><span class="eyebrow">MISI SELESAI · KUMPULAN ${group}</span><h2>Syabas! Kamu Detektif Toleransi Hebat!</h2><div class="big-score">${state.score}<span style="font-size:25px">/100</span></div><p class="chip">${badge(state.score)}</p><p>${state.results.filter(r=>r.categoryCorrect).length}/10 kategori betul · ${state.results.filter(r=>r.sentenceCorrect).length}/10 pelengkap betul</p>${state.mode==='challenge'?`<p>Bonus cabaran: ${state.bonus}/20 (berasingan daripada markah asas).</p>`:''}<p>Terus amalkan sikap sabar, bertolak ansur dan menghormati orang lain.</p><div class="actions" style="justify-content:center"><button class="primary" onclick="review()">ULANG KAJI KAD</button><button onclick="setup(group)">MAIN SEMULA</button><button onclick="groups()">PILIH KUMPULAN LAIN</button></div></section>`)}
-function review(){screen(`<span class="eyebrow">NOTA DETEKTIF</span><h2>10 kes, banyak cara bertolak ansur.</h2>${cases.map((c,i)=>`<article class="panel review"><div class="art">${illustration(c.scene,c.title)}</div><div><h3>${i+1}. ${c.title}</h3><p>${c.text}</p><b>${c.answer?'✅ TOLERANSI':'❌ TIDAK BERTOLERANSI'}</b><p>Amalan toleransi dalam situasi ini ialah ${c.good}</p>${c.note?`<p class="muted">${c.note}</p>`:''}</div></article>`).join('')}<button class="primary" onclick="finish()">KEMBALI KE KEPUTUSAN</button>`)}
-$('#home').onclick=e=>{e.preventDefault();welcome()};$('#sound').onclick=()=>{sound=!sound;$('#sound').textContent='Bunyi: '+(sound?'Hidup':'Senyap');$('#sound').setAttribute('aria-pressed',String(sound))};welcome();
+
+const emotions = [
+  {emoji:"😄",label:"Gembira"},{emoji:"😌",label:"Tenang"},{emoji:"😟",label:"Risau"},
+  {emoji:"😢",label:"Sedih"},{emoji:"😡",label:"Marah"}
+];
+
+const app = document.getElementById("app");
+const modal = document.getElementById("teacherModal");
+let state = {
+  screen:"home", index:0, stars:0, sound:true, hints:true,
+  selectedPrediction:null, reason:"", emotion:null, feelingReason:"",
+  solution:null, awarded:{choice:false,reason:false,solution:false}
+};
+
+function save(){sessionStorage.setItem("ramalkan-akibatnya",JSON.stringify(state))}
+function load(){
+  try{
+    const saved=JSON.parse(sessionStorage.getItem("ramalkan-akibatnya"));
+    if(saved && typeof saved.index==="number") state={...state,...saved};
+  }catch(e){}
+}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function beep(kind="click"){
+  if(!state.sound)return;
+  try{
+    const AudioCtx=window.AudioContext||window.webkitAudioContext,ctx=new AudioCtx(),o=ctx.createOscillator(),g=ctx.createGain();
+    o.connect(g);g.connect(ctx.destination);
+    o.frequency.value=kind==="success"?820:kind==="star"?1040:560;
+    g.gain.setValueAtTime(.05,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.18);
+    o.start();o.stop(ctx.currentTime+.2);o.onended=()=>ctx.close();
+  }catch(e){}
+}
+function addStar(type){
+  if(!state.awarded[type]){state.stars=Math.min(18,state.stars+1);state.awarded[type]=true;beep("star");save()}
+}
+function resetPerSituation(){
+  state.selectedPrediction=null;state.reason="";state.emotion=null;state.feelingReason="";state.solution=null;
+  state.awarded={choice:false,reason:false,solution:false};save()
+}
+function progress(){
+  return `<div class="progress-wrap"><div><div class="small">Misi ${state.index+1} / 6</div><div class="progress"><span style="width:${((state.index+1)/6)*100}%"></span></div></div><div class="score">⭐ ${state.stars} / 18</div></div>`
+}
+function show(html,name){state.screen=name;save();app.innerHTML=`<section class="screen">${html}</section>`;window.scrollTo({top:0,behavior:"smooth"})}
+function renderHome(){
+  show(`<div class="hero">
+    <div>
+      <div class="pill">Pendidikan Moral Tahun 5</div>
+      <h1>🔮 RAMALKAN<br>AKIBATNYA!</h1>
+      <p class="subtitle">Apa akan berlaku jika kita tidak bertoleransi?</p>
+      <div class="meta"><span class="pill">🏘️ Masyarakat</span><span class="pill">🤝 Toleransi</span><span class="pill">💭 Ramal akibat</span></div>
+      <p>Misi kamu: ramalkan kesan, jelaskan <b>mengapa</b>, nyatakan perasaan dan pilih tindakan yang bertoleransi.</p>
+      <div class="action-row"><button class="primary" onclick="startVideo()">▶️ MULA MISI</button></div>
+      <p class="small">Standard Pembelajaran: 14.3 · 14.4 · 14.5</p>
+    </div>
+    <div class="hero-art">
+      <div class="neighborhood">🏠 🏡<br>🏛️ 🌳<br>👨‍👩‍👧‍👦 🤝</div>
+      <div class="float q1">❓</div><div class="float q2">💭</div><div class="float q3">🔮</div>
+    </div>
+  </div>`,"home")
+}
+let videoTimer=null, videoPaused=false;
+function startVideo(){
+  beep();show(`<div class="panel">
+    <h2>🎬 Video Pembukaan</h2>
+    <div id="videoStage" class="video-stage">
+      <div class="video-title">🏘️ TAMAN HARMONI</div>
+      <div class="houses">🏠 🏡 🏠</div><div class="hall">🏛️</div>
+      <div class="character char-a">👨‍👩‍👧</div><div class="character char-b">🏸👨‍👩‍👦</div>
+      <div class="speech a">“Kami mahu mengadakan majlis keluarga!”</div>
+      <div class="speech b">“Kami sudah merancang aktiviti sukan!”</div>
+      <div class="speech c">“Kami mahu gunakan dewan dahulu!”</div>
+      <div class="speech d">“Kami pun tidak mahu mengalah!”</div>
+    </div>
+    <p class="center"><b>Hari ini, dua kumpulan penduduk mahu menggunakan Dewan Taman Harmoni pada waktu yang sama.</b></p>
+    <div class="video-controls">
+      <button onclick="playVideo()">▶️ Play</button><button onclick="pauseVideo()">⏸️ Pause</button>
+      <button onclick="replayVideo()">🔄 Replay</button><button class="secondary" onclick="beginMission()">⏭️ Skip Video</button>
+    </div>
+    <div class="action-row center"><button class="primary" onclick="beginMission()">🔮 RAMALKAN SEKARANG ➜</button></div>
+  </div>`,"video");
+  playVideo()
+}
+function playVideo(){videoPaused=false;document.getElementById("videoStage")?.classList.remove("paused");clearTimeout(videoTimer);videoTimer=setTimeout(()=>{},18000)}
+function pauseVideo(){videoPaused=true;document.getElementById("videoStage")?.classList.add("paused");clearTimeout(videoTimer)}
+function replayVideo(){const st=document.getElementById("videoStage");if(st){const clone=st.cloneNode(true);st.replaceWith(clone)}playVideo()}
+function beginMission(){clearTimeout(videoTimer);state.index=0;state.stars=0;resetPerSituation();renderPrediction()}
+function renderPrediction(){
+  const s=situations[state.index];
+  show(`${progress()}<div class="case-layout">
+    <div class="panel case-card">
+      <div class="scene-art"><div class="scene-icon">${s.icon}</div></div>
+      <div class="pill">🏘️ SITUASI</div>
+      <h2>${s.title}</h2><p class="case-text">${s.situation}</p>
+    </div>
+    <div class="panel">
+      <div class="question">🤔 Apa yang mungkin berlaku selepas ini?</div>
+      <div class="option-grid">
+      ${s.prediction.map((o,i)=>`<button class="option-card ${state.selectedPrediction===i?"selected":""}" onclick="choosePrediction(${i})"><span class="emoji">${o.emoji}</span><span class="label">${o.label}</span></button>`).join("")}
+      </div>
+      <div id="predictionFeedback"></div>
+    </div>
+  </div>`,"prediction");
+  if(state.selectedPrediction!==null)showPredictionFeedback()
+}
+function choosePrediction(i){state.selectedPrediction=i;addStar("choice");save();beep("success");renderPrediction()}
+function showPredictionFeedback(){
+  const s=situations[state.index],o=s.prediction[state.selectedPrediction];
+  const box=document.getElementById("predictionFeedback");if(!box)return;
+  box.innerHTML=`<div class="feedback ${o.type==="solution"?"think":""}"><b>${o.type==="effect"?"Ya, ini boleh berlaku!":"Ini tindakan yang baik!"}</b><p>${o.feedback}</p><p>💭 <b>Mengapa kamu fikir perkara ini boleh berlaku?</b></p><button class="primary" onclick="renderJustification()">JELASKAN PILIHAN ➜</button></div>`
+}
+function renderJustification(){
+  const s=situations[state.index],o=s.prediction[state.selectedPrediction];
+  show(`${progress()}<div class="panel">
+    <div class="pill">💬 JELASKAN PILIHAN KAMU</div>
+    <h2>MENGAPA?</h2>
+    <div class="sentence">Saya memilih <b>${o.label.toUpperCase()}</b> kerana ______.</div>
+    <label for="reason"><b>Alasan kamu</b></label>
+    <textarea id="reason" placeholder="Taip sebab kamu di sini…">${esc(state.reason)}</textarea>
+    ${state.hints?`<div class="action-row"><button class="secondary" onclick="toggleHelpers()">💡 BANTU SAYA</button></div><div id="helpers" class="helper-wrap hidden">${s.helpers.map(h=>`<button class="helper" onclick="useHelper('${esc(h).replace(/'/g,"&#39;")}')">${h}</button>`).join("")}</div>`:""}
+    <div class="action-row"><button class="primary" onclick="saveReason()">SIMPAN ALASAN ➜</button></div>
+  </div>`,"justification")
+}
+function toggleHelpers(){document.getElementById("helpers")?.classList.toggle("hidden")}
+function useHelper(text){const ta=document.getElementById("reason");if(ta){ta.value=text;ta.focus()}}
+function saveReason(){
+  const v=document.getElementById("reason").value.trim();
+  if(!v){alert("Sila tulis atau pilih satu alasan dahulu.");return}
+  state.reason=v;addStar("reason");save();renderFeeling()
+}
+function renderFeeling(){
+  show(`${progress()}<div class="panel">
+    <div class="pill">💗 BAGAIMANA PERASAAN KAMU?</div>
+    <h2>Jika perkara ini berlaku di kawasan tempat tinggal kamu, apakah perasaan kamu?</h2>
+    <div class="emotions">${emotions.map((e,i)=>`<button class="emotion ${state.emotion===i?"selected":""}" onclick="chooseEmotion(${i})"><div class="emoji">${e.emoji}</div><b>${e.label}</b></button>`).join("")}</div>
+    <div class="sentence" style="margin-top:18px">Saya berasa <b>${state.emotion!==null?emotions[state.emotion].label.toUpperCase():"______"}</b> kerana ______.</div>
+    <label for="feelingReason"><b>Alasan perasaan</b></label>
+    <input id="feelingReason" type="text" value="${esc(state.feelingReason)}" placeholder="Contoh: pergaduhan boleh menjejaskan hubungan jiran">
+    <div class="action-row"><button class="primary" onclick="saveFeeling()">SETERUSNYA ➜</button></div>
+  </div>`,"feeling")
+}
+function chooseEmotion(i){state.emotion=i;save();renderFeeling()}
+function saveFeeling(){
+  if(state.emotion===null){alert("Pilih satu perasaan dahulu.");return}
+  state.feelingReason=document.getElementById("feelingReason").value.trim();save();renderSolution()
+}
+function renderSolution(){
+  const s=situations[state.index];
+  show(`${progress()}<div class="panel">
+    <div class="pill">🤝 APA YANG PATUT MEREKA LAKUKAN?</div>
+    <h2>Pilih tindakan yang menunjukkan toleransi.</h2>
+    <div class="solution-list">${s.solutions.map((x,i)=>`<button class="solution ${state.solution===i&&i===s.correctSolution?"correct":""}" onclick="chooseSolution(${i})"><b>${String.fromCharCode(65+i)}.</b> ${["😡","🚫","🤝","📢"][i]||"•"} ${x}</button>`).join("")}</div>
+    <div id="solutionFeedback"></div>
+  </div>`,"solution");
+  if(state.solution!==null)showSolutionFeedback()
+}
+function chooseSolution(i){state.solution=i;save();renderSolution()}
+function showSolutionFeedback(){
+  const s=situations[state.index],ok=state.solution===s.correctSolution,box=document.getElementById("solutionFeedback");
+  if(!box)return;
+  if(ok){addStar("solution");box.innerHTML=`<div class="feedback center"><div class="big-success">✨🤝🏘️</div><h2>HEBAT!</h2><p><b>Toleransi membantu masyarakat hidup aman dan harmoni.</b></p><button class="primary" onclick="nextSituation()">SETERUSNYA ➜</button></div>`;beep("success")}
+  else box.innerHTML=`<div class="feedback think"><b>Fikir lagi.</b><p>Tindakan bertoleransi perlu membantu orang berbincang, menghormati orang lain atau bertolak ansur.</p></div>`
+}
+function nextSituation(){
+  if(state.index<5){state.index++;resetPerSituation();renderPrediction()}else renderEnd()
+}
+function renderEnd(){
+  const stars="⭐".repeat(state.stars);
+  show(`<div class="panel center">
+    <div class="big-success">🎉</div><h1>TAHNIAH!</h1>
+    <p class="subtitle">Kamu telah menyelesaikan Misi Ramalkan Akibatnya!</p>
+    <div class="stars">${stars||"⭐"}</div><h2>${state.stars} / 18 bintang</h2>
+    <div class="feedback"><h3>🤝 INGAT!</h3>
+    <p>Jika toleransi diabaikan, masyarakat boleh mengalami konflik, pergaduhan dan hubungan yang renggang.</p>
+    <p><b>Jika kita saling menghormati, berbincang dan bertolak ansur, masyarakat akan hidup aman dan harmoni.</b></p></div>
+    <div class="action-row" style="justify-content:center"><button class="primary" onclick="restart()">🔄 MAIN SEMULA</button><button class="secondary" onclick="goHome()">🏠 KEMBALI KE MENU</button></div>
+  </div>`,"end");beep("success")
+}
+function restart(){state.index=0;state.stars=0;resetPerSituation();renderPrediction()}
+function goHome(){state={...state,screen:"home",index:0,stars:0,selectedPrediction:null,reason:"",emotion:null,feelingReason:"",solution:null,awarded:{choice:false,reason:false,solution:false}};save();renderHome()}
+function openTeacher(){
+  modal.classList.add("open");modal.setAttribute("aria-hidden","false");
+  document.getElementById("teacherSituation").innerHTML=situations.map((s,i)=>`<option value="${i}" ${i===state.index?"selected":""}>${i+1}. ${s.title}</option>`).join("");
+  syncTeacher()
+}
+function closeTeacher(){modal.classList.remove("open");modal.setAttribute("aria-hidden","true")}
+function syncTeacher(){document.getElementById("hintState").textContent=state.hints?"Aktif":"Tidak aktif";document.getElementById("soundState").textContent=state.sound?"Aktif":"Tidak aktif"}
+function teacherJump(){state.index=Number(document.getElementById("teacherSituation").value);resetPerSituation();closeTeacher();renderPrediction()}
+function teacherRepeat(){resetPerSituation();closeTeacher();renderPrediction()}
+function teacherShow(){
+  const s=situations[Number(document.getElementById("teacherSituation").value)];
+  document.getElementById("teacherAnswer").innerHTML=`<b>Jawapan cadangan:</b><p>${s.suggested}</p><p><b>Kesan pengabaian:</b> ${s.prediction.filter(x=>x.type==="effect").map(x=>x.label).join(", ")}.</p>`
+}
+document.getElementById("homeBtn").onclick=goHome;
+document.getElementById("soundBtn").onclick=()=>{state.sound=!state.sound;document.getElementById("soundBtn").textContent=state.sound?"🔊":"🔇";save();syncTeacher()};
+document.getElementById("teacherBtn").onclick=openTeacher;
+document.getElementById("closeTeacher").onclick=closeTeacher;
+document.getElementById("jumpSituation").onclick=teacherJump;
+document.getElementById("repeatSituation").onclick=teacherRepeat;
+document.getElementById("showSuggestion").onclick=teacherShow;
+document.getElementById("toggleHints").onclick=()=>{state.hints=!state.hints;save();syncTeacher()};
+document.getElementById("toggleSoundTeacher").onclick=()=>{state.sound=!state.sound;document.getElementById("soundBtn").textContent=state.sound?"🔊":"🔇";save();syncTeacher()};
+document.getElementById("resetGame").onclick=()=>{if(confirm("Reset semua kemajuan permainan?")){sessionStorage.removeItem("ramalkan-akibatnya");state={screen:"home",index:0,stars:0,sound:state.sound,hints:state.hints,selectedPrediction:null,reason:"",emotion:null,feelingReason:"",solution:null,awarded:{choice:false,reason:false,solution:false}};closeTeacher();renderHome()}};
+modal.addEventListener("click",e=>{if(e.target===modal)closeTeacher()});
+load();document.getElementById("soundBtn").textContent=state.sound?"🔊":"🔇";renderHome();
