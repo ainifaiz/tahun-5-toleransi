@@ -43,7 +43,7 @@ h3{font-size:clamp(18px,2.2vw,25px);margin:10px 0}
 .wheel-center{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;display:grid;place-items:center;align-content:center;background:#fff;border:6px solid #f0c956;box-shadow:0 5px 10px #9b8d58;color:#5a50c9;font-size:30px}
 .wheel-center small{display:block;font-size:10px;color:var(--ink)}
 .wheel-label{position:absolute;z-index:1;width:34%;left:33%;top:8%;text-align:center;font-size:clamp(10px,1.25vw,16px);line-height:1.1;color:#24324a;text-shadow:0 1px #fff;font-weight:1000}
-.l1{transform:rotate(0deg) translateY(0)}.l2{transform:rotate(60deg) translateY(0)}.l3{transform:rotate(120deg) translateY(0)}.l4{transform:rotate(180deg) translateY(0)}.l5{transform:rotate(240deg) translateY(0)}.l6{transform:rotate(300deg) translateY(0)}
+.l1{top:9%;left:33%;transform:none}.l2{top:25%;left:64%;transform:none}.l3{top:57%;left:64%;transform:none}.l4{top:81%;left:33%;transform:none}.l5{top:57%;left:2%;transform:none}.l6{top:25%;left:2%;transform:none}
 .spin-btn{width:min(100%,330px);min-height:58px;background:var(--purple);color:#fff;border-radius:17px;font-size:20px;font-weight:1000;letter-spacing:.5px}
 .spin-btn:hover:not(:disabled){background:var(--purple-dark)}
 .selected-category{margin:18px auto 5px;padding:13px;border-radius:16px;background:var(--yellow);color:#604d13;font-size:clamp(16px,2vw,23px);font-weight:1000;min-height:52px;display:grid;place-items:center}
